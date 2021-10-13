@@ -1,22 +1,15 @@
-user_words = 'is it going to be cold weather today'.split(' ')
-faq_question = 'what day is it today'.split(' ')
-
-intersect = [] #in both
-union = [] #in either
-
-for uw in user_words:
-    if uw in faq_question and uw not in intersect:
-        #no duplicates
-        intersect.append(uw)
-    if uw not in union:
-        union.append(uw)
-
-for word in faq_question:
-    if word not in union:
-        union.append(word)
-
-print(intersect)
-print(union)
-score = len(intersect)/len(union)
-
-print("Score is {:.2f}".format(score))
+from question_catalogue_access import QuestionCatalogueAccess
+import utils
+class MachingEngine:
+    def get_maching_answer(text):
+        user_question = utils.words_to_lowercase(utils.text_to_words(text))
+        origin_question = QuestionCatalogueAccess.load_json()
+        high_similarity = 0
+        for i in origin_question:
+            origin_question_list = utils.text_to_words(i['question'])
+            lower_origin_question = utils.words_to_lowercase(origin_question_list)
+            similarity = utils.jaccard_similarity_score(lower_origin_question, user_question)
+            if high_similarity < similarity:
+                high_similarity = similarity
+                final_answer = i
+        return final_answer, high_similarity
