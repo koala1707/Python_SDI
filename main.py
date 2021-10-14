@@ -3,7 +3,6 @@ from question_answer_manager import QuestionAnswerManager
 
 def main(candidates_path, questions_log_path):
     manager = QuestionAnswerManager()
-
     client = InteractiveConsoleClient(manager)
     client.run()
 
